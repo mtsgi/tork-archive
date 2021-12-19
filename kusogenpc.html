@@ -1,289 +1,425 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
+<html lang="ja">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
     <title>クソ診断ジェネレータ(PC版)</title>
     <script src="./jquery.js"></script>
     <style type="text/css">
-        body {
-            margin: 0;
-            font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
-            background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(115, 115, 115, 1) 0%, rgba(0, 0, 0, 1) 47%, rgba(115, 115, 115, 1) 100%);
-            background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(0%, rgba(115, 115, 115, 1)), color-stop(47%, rgba(0, 0, 0, 1)), color-stop(100%, rgba(115, 115, 115, 1)));
-            background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(115, 115, 115, 1) 0%, rgba(0, 0, 0, 1) 47%, rgba(115, 115, 115, 1) 100%);
-            background: -o-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(115, 115, 115, 1) 0%, rgba(0, 0, 0, 1) 47%, rgba(115, 115, 115, 1) 100%);
-            background: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(115, 115, 115, 1) 0%, rgba(0, 0, 0, 1) 47%, rgba(115, 115, 115, 1) 100%);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(115, 115, 115, 1) 0%, rgba(0, 0, 0, 1) 47%, rgba(115, 115, 115, 1) 100%);
-        }
+      body {
+        margin: 0;
+        font-family: "游ゴシック体", YuGothic, "游ゴシック Medium",
+          "Yu Gothic Medium", "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
+        background: -moz-linear-gradient(
+          -45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(115, 115, 115, 1) 0%,
+          rgba(0, 0, 0, 1) 47%,
+          rgba(115, 115, 115, 1) 100%
+        );
+        background: -webkit-gradient(
+          left top,
+          right bottom,
+          color-stop(0%, rgba(255, 255, 255, 1)),
+          color-stop(0%, rgba(115, 115, 115, 1)),
+          color-stop(47%, rgba(0, 0, 0, 1)),
+          color-stop(100%, rgba(115, 115, 115, 1))
+        );
+        background: -webkit-linear-gradient(
+          -45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(115, 115, 115, 1) 0%,
+          rgba(0, 0, 0, 1) 47%,
+          rgba(115, 115, 115, 1) 100%
+        );
+        background: -o-linear-gradient(
+          -45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(115, 115, 115, 1) 0%,
+          rgba(0, 0, 0, 1) 47%,
+          rgba(115, 115, 115, 1) 100%
+        );
+        background: -ms-linear-gradient(
+          -45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(115, 115, 115, 1) 0%,
+          rgba(0, 0, 0, 1) 47%,
+          rgba(115, 115, 115, 1) 100%
+        );
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(115, 115, 115, 1) 0%,
+          rgba(0, 0, 0, 1) 47%,
+          rgba(115, 115, 115, 1) 100%
+        );
+      }
 
-        header {
-            z-index: 99;
-            box-sizing: border-box;
-            position: fixed;
-            width: 60%;
-            font-size: 24px;
-            padding: 10px;
-            box-shadow: 0px 1px 10px rgba(0, 0, 0, .3);
-            background: white;
-            background: -moz-linear-gradient(45deg, rgba(255, 255, 255, 1) 0%, rgba(194, 221, 255, 1) 51%, rgba(255, 255, 255, 1) 100%);
-            background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(51%, rgba(194, 221, 255, 1)), color-stop(100%, rgba(255, 255, 255, 1)));
-            background: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 1) 0%, rgba(194, 221, 255, 1) 51%, rgba(255, 255, 255, 1) 100%);
-            background: -o-linear-gradient(45deg, rgba(255, 255, 255, 1) 0%, rgba(194, 221, 255, 1) 51%, rgba(255, 255, 255, 1) 100%);
-            background: -ms-linear-gradient(45deg, rgba(255, 255, 255, 1) 0%, rgba(194, 221, 255, 1) 51%, rgba(255, 255, 255, 1) 100%);
-            background: linear-gradient(45deg, rgba(255, 255, 255, 1) 0%, rgba(194, 221, 255, 1) 51%, rgba(255, 255, 255, 1) 100%);
-        }
+      header {
+        z-index: 99;
+        box-sizing: border-box;
+        position: fixed;
+        width: 60%;
+        font-size: 24px;
+        padding: 10px;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
+        background: white;
+        background: -moz-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(194, 221, 255, 1) 51%,
+          rgba(255, 255, 255, 1) 100%
+        );
+        background: -webkit-gradient(
+          left bottom,
+          right top,
+          color-stop(0%, rgba(255, 255, 255, 1)),
+          color-stop(51%, rgba(194, 221, 255, 1)),
+          color-stop(100%, rgba(255, 255, 255, 1))
+        );
+        background: -webkit-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(194, 221, 255, 1) 51%,
+          rgba(255, 255, 255, 1) 100%
+        );
+        background: -o-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(194, 221, 255, 1) 51%,
+          rgba(255, 255, 255, 1) 100%
+        );
+        background: -ms-linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(194, 221, 255, 1) 51%,
+          rgba(255, 255, 255, 1) 100%
+        );
+        background: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 1) 0%,
+          rgba(194, 221, 255, 1) 51%,
+          rgba(255, 255, 255, 1) 100%
+        );
+      }
 
-        header span {
-            color: gray;
-            font-size: 14px;
-            float: right;
-        }
+      header span {
+        color: gray;
+        font-size: 14px;
+        float: right;
+      }
 
-        form {
-            width: calc(60% - 40px);
-            margin: 0px;
-            padding: 20px;
-            padding-top: 90px;
-            font-size: 20px;
-            color: #ffffff;
-        }
+      form {
+        width: calc(60% - 40px);
+        margin: 0px;
+        padding: 20px;
+        padding-top: 90px;
+        font-size: 20px;
+        color: #ffffff;
+      }
 
-        #tx {
-            box-sizing: border-box;
-            font-size: 40px;
-            color: #ffffff;
-            border: 2px solid white;
-            padding: 16px 20px;
-            border-radius: 10px;
-            background: #303030;
-            margin: 15px 0px;
-            width: 100%;
-            transition: .2s all ease;
-        }
+      #tx {
+        box-sizing: border-box;
+        font-size: 40px;
+        color: #ffffff;
+        border: 2px solid white;
+        padding: 16px 20px;
+        border-radius: 10px;
+        background: #303030;
+        margin: 15px 0px;
+        width: 100%;
+        transition: 0.2s all ease;
+      }
 
-        input:focus {
-            box-shadow: 0px 0px 0px 6px dodgerblue;
-        }
+      input:focus {
+        box-shadow: 0px 0px 0px 6px dodgerblue;
+      }
 
-        select {
-            font-size: 18px;
-            background: #303030;
-            color: white;
-            padding: 7px 12px;
-            border: 2px solid white;
-            border-radius: 4px;
-            margin: 2px;
-            box-shadow: 1px 1px 1px black;
-            margin-bottom: 5px;
-        }
+      select {
+        font-size: 18px;
+        background: #303030;
+        color: white;
+        padding: 7px 12px;
+        border: 2px solid white;
+        border-radius: 4px;
+        margin: 2px;
+        box-shadow: 1px 1px 1px black;
+        margin-bottom: 5px;
+      }
 
-        .gen {
-            z-index: 999;
-            box-sizing: border-box;
-            text-align: center;
-            position: fixed;
-            left: 60%;
-            bottom: 0px;
-            width: 40%;
-            height: 100px;
-            cursor: pointer;
-            background: -moz-linear-gradient(45deg, rgba(84, 172, 255, 1) 0%, rgba(32, 124, 229, 1) 100%);
-            background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(84, 172, 255, 1)), color-stop(100%, rgba(32, 124, 229, 1)));
-            background: -webkit-linear-gradient(45deg, rgba(84, 172, 255, 1) 0%, rgba(32, 124, 229, 1) 100%);
-            background: -o-linear-gradient(45deg, rgba(84, 172, 255, 1) 0%, rgba(32, 124, 229, 1) 100%);
-            background: -ms-linear-gradient(45deg, rgba(84, 172, 255, 1) 0%, rgba(32, 124, 229, 1) 100%);
-            background: linear-gradient(45deg, rgba(84, 172, 255, 1) 0%, rgba(32, 124, 229, 1) 100%);
-            color: white;
-            line-height: 100px;
-        }
+      .gen {
+        z-index: 999;
+        box-sizing: border-box;
+        text-align: center;
+        position: fixed;
+        left: 60%;
+        bottom: 0px;
+        width: 40%;
+        height: 100px;
+        cursor: pointer;
+        background: -moz-linear-gradient(
+          45deg,
+          rgba(84, 172, 255, 1) 0%,
+          rgba(32, 124, 229, 1) 100%
+        );
+        background: -webkit-gradient(
+          left bottom,
+          right top,
+          color-stop(0%, rgba(84, 172, 255, 1)),
+          color-stop(100%, rgba(32, 124, 229, 1))
+        );
+        background: -webkit-linear-gradient(
+          45deg,
+          rgba(84, 172, 255, 1) 0%,
+          rgba(32, 124, 229, 1) 100%
+        );
+        background: -o-linear-gradient(
+          45deg,
+          rgba(84, 172, 255, 1) 0%,
+          rgba(32, 124, 229, 1) 100%
+        );
+        background: -ms-linear-gradient(
+          45deg,
+          rgba(84, 172, 255, 1) 0%,
+          rgba(32, 124, 229, 1) 100%
+        );
+        background: linear-gradient(
+          45deg,
+          rgba(84, 172, 255, 1) 0%,
+          rgba(32, 124, 229, 1) 100%
+        );
+        color: white;
+        line-height: 100px;
+      }
 
-        .gen:hover {
-            opacity: .8;
-        }
+      .gen:hover {
+        opacity: 0.8;
+      }
 
-        aside {
-            width: 40%;
-            background: #ffffff;
-            color: dodgerblue;
-            font-size: 20px;
-            margin-top: 22px;
-            padding: 8px 12px;
-            border-left: 12px solid dodgerblue;
-        }
+      aside {
+        width: 40%;
+        background: #ffffff;
+        color: dodgerblue;
+        font-size: 20px;
+        margin-top: 22px;
+        padding: 8px 12px;
+        border-left: 12px solid dodgerblue;
+      }
 
-        .help {
-            display: inline-block;
-            text-align: center;
-            width: 28px;
-            height: 28px;
-            font-size: 14px;
-            font-weight: 900;
-            background: skyblue;
-            margin: 0px 6px;
-            cursor: pointer;
-            border-radius: 999px;
-            border: 3px solid white;
-            padding: 0px;
-            color: black;
-            transform: scale(.85);
-            opacity: .5;
-        }
+      .help {
+        display: inline-block;
+        text-align: center;
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        font-weight: 900;
+        background: skyblue;
+        margin: 0px 6px;
+        cursor: pointer;
+        border-radius: 999px;
+        border: 3px solid white;
+        padding: 0px;
+        color: black;
+        transform: scale(0.85);
+        opacity: 0.5;
+      }
 
-        a {
-            color: dodgerblue;
-        }
+      a {
+        color: dodgerblue;
+      }
 
-        a:hover {
-            opacity: 1.0;
-        }
+      a:hover {
+        opacity: 1;
+      }
 
-        label:hover {
-            opacity: .5;
-        }
+      label:hover {
+        opacity: 0.5;
+      }
 
-        .hs {
-            cursor: pointer;
-            text-decoration: underline;
-            color: dodgerblue;
-            display: inline-block;
-            padding: 3px;
-        }
+      .hs {
+        cursor: pointer;
+        text-decoration: underline;
+        color: dodgerblue;
+        display: inline-block;
+        padding: 3px;
+      }
 
-        #h {
-            display: none;
-            border: 1px solid gray;
-            padding: 0 6px;
-            margin: 10px 4px;
-            border-radius: 8px;
+      #h {
+        display: none;
+        border: 1px solid gray;
+        padding: 0 6px;
+        margin: 10px 4px;
+        border-radius: 8px;
+      }
 
-        }
+      #split,
+      #moj,
+      #query,
+      #sname,
+      #skosuu,
+      #author,
+      #before,
+      #after {
+        background: #303030;
+        color: white;
+        font-size: 18px;
+        border: 2px solid white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        box-shadow: inset 1px 1px 3px black;
+        margin-left: 5px;
+        width: calc(40% - 20px);
+      }
 
-        #split,
-        #moj,
-        #query,
-        #sname,
-        #skosuu,
-        #author,
-        #before,
-        #after {
-            background: #303030;
-            color: white;
-            font-size: 18px;
-            border: 2px solid white;
-            padding: 8px 12px;
-            border-radius: 4px;
-            box-shadow: inset 1px 1px 3px black;
-            margin-left: 5px;
-            width: calc(40% - 20px);
-        }
+      #query,
+      #sname,
+      #author {
+        margin: 0;
+        width: calc(100% - 40px);
+        margin-bottom: 5px;
+      }
 
-        #query,
-        #sname,
-        #author {
-            margin: 0;
-            width: calc(100% - 40px);
-            margin-bottom: 5px;
-        }
+      .dsb {
+        color: #303030;
+      }
 
-        .dsb {
-            color: #303030;
-        }
+      #forpc {
+        float: right;
+      }
 
-        #forpc {
-            float: right;
-        }
+      #area {
+        z-index: 998;
+        position: fixed;
+        left: 60%;
+        top: 0px;
+        background: -moz-linear-gradient(
+          -45deg,
+          rgba(226, 226, 226, 1) 0%,
+          rgba(219, 219, 219, 1) 50%,
+          rgba(209, 209, 209, 1) 51%,
+          rgba(254, 254, 254, 1) 100%
+        );
+        background: -webkit-gradient(
+          left top,
+          right bottom,
+          color-stop(0%, rgba(226, 226, 226, 1)),
+          color-stop(50%, rgba(219, 219, 219, 1)),
+          color-stop(51%, rgba(209, 209, 209, 1)),
+          color-stop(100%, rgba(254, 254, 254, 1))
+        );
+        background: -webkit-linear-gradient(
+          -45deg,
+          rgba(226, 226, 226, 1) 0%,
+          rgba(219, 219, 219, 1) 50%,
+          rgba(209, 209, 209, 1) 51%,
+          rgba(254, 254, 254, 1) 100%
+        );
+        background: -o-linear-gradient(
+          -45deg,
+          rgba(226, 226, 226, 1) 0%,
+          rgba(219, 219, 219, 1) 50%,
+          rgba(209, 209, 209, 1) 51%,
+          rgba(254, 254, 254, 1) 100%
+        );
+        background: -ms-linear-gradient(
+          -45deg,
+          rgba(226, 226, 226, 1) 0%,
+          rgba(219, 219, 219, 1) 50%,
+          rgba(209, 209, 209, 1) 51%,
+          rgba(254, 254, 254, 1) 100%
+        );
+        background: linear-gradient(
+          135deg,
+          rgba(226, 226, 226, 1) 0%,
+          rgba(219, 219, 219, 1) 50%,
+          rgba(209, 209, 209, 1) 51%,
+          rgba(254, 254, 254, 1) 100%
+        );
+        width: 100%;
+        height: 100%;
+        box-shadow: 0px 0px 10px black;
+      }
 
-        #area {
-            z-index: 998;
-            position: fixed;
-            left: 60%;
-            top: 0px;
-            background: -moz-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
-background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(226,226,226,1)), color-stop(50%, rgba(219,219,219,1)), color-stop(51%, rgba(209,209,209,1)), color-stop(100%, rgba(254,254,254,1)));
-background: -webkit-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
-background: -o-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
-background: -ms-linear-gradient(-45deg, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
-background: linear-gradient(135deg, rgba(226,226,226,1) 0%, rgba(219,219,219,1) 50%, rgba(209,209,209,1) 51%, rgba(254,254,254,1) 100%);
-            width: 100%;
-            height: 100%;
-            box-shadow: 0px 0px 10px black;
-        }
-
-        .clear {
-            font-size: 14px;
-            top: 0px;
-            right: 0px;
-            background: dodgerblue;
-            color: white;
-            padding: 0 20px;
-            z-index: 1000;
-            position: fixed;
-            border-radius: 0px 0px 0px 10px;
-            cursor: pointer;
-            opacity: .75;
-        }
+      .clear {
+        font-size: 14px;
+        top: 0px;
+        right: 0px;
+        background: dodgerblue;
+        color: white;
+        padding: 0 20px;
+        z-index: 1000;
+        position: fixed;
+        border-radius: 0px 0px 0px 10px;
+        cursor: pointer;
+        opacity: 0.75;
+      }
     </style>
     <script src="/kusogen.js"></script>
-</head>
+  </head>
 
-<body>
-    <header><strong>クソ診断ジェネレータ<a class="help" id="q0">？</a></strong><span>作成:@mt_sgi</span></header>
+  <body>
+    <header>
+      <strong>クソ診断ジェネレータ<a class="help" id="q0">？</a></strong
+      ><span>作成:@mt_sgi</span>
+    </header>
     <form onsubmit="return false;">
-        <a id="forpc" href="./kusogen.html">スマホ版はこちら</a>
-        対象の文字列<a class="help" id="q1">？</a><br>
-        <input type="text" id="tx"><br>
-        文字数<a class="help" id="q2">？</a><br>
-        <select id="opt">
-            <option value="ran">ランダム文字数</option>
-            <option value="fix" selected="selected">文字数固定</option>
-        </select>
-        <br>
-        診断名を指定する<a class="help" id="q7">？</a><br>
-        <label for="sn"><input type="checkbox" id="sn"> オンにする</label>
-        <br>
-        <input type="text" id="sname" placeholder="すごい診断">
-        <br>
-        先頭と末尾<a class="help" id="q10">？</a><br>
-        <input type="text" id="before" placeholder="先頭"> (本文)
-        <input type="text" id="after" placeholder="末尾"><br>
-        ヒント：「<a id="namaemoji"></a>」を使うと入力された名前を表示させることができます。<br>
-        言語<a class="help" id="q3">？</a><br>
-        <select>
-            <option selected="selected">日本語</option>
-        </select><br>
+      <a id="forpc" href="./kusogen.html">スマホ版はこちら</a>
+      対象の文字列<a class="help" id="q1">？</a><br />
+      <input type="text" id="tx" /><br />
+      文字数<a class="help" id="q2">？</a><br />
+      <select id="opt">
+        <option value="ran">ランダム文字数</option>
+        <option value="fix" selected="selected">文字数固定</option>
+      </select>
+      <br />
+      診断名を指定する<a class="help" id="q7">？</a><br />
+      <label for="sn"><input type="checkbox" id="sn" /> オンにする</label>
+      <br />
+      <input type="text" id="sname" placeholder="すごい診断" />
+      <br />
+      先頭と末尾<a class="help" id="q10">？</a><br />
+      <input type="text" id="before" placeholder="先頭" /> (本文)
+      <input type="text" id="after" placeholder="末尾" /><br />
+      ヒント：「<a id="namaemoji"></a
+      >」を使うと入力された名前を表示させることができます。<br />
+      言語<a class="help" id="q3">？</a><br />
+      <select>
+        <option selected="selected">日本語</option></select
+      ><br />
 
-        文字数オプション<a class="help" id="q4">？</a><br>
-        <select id="mjs" style="color: rgb(255, 118, 39);">
-            <option value="def" selected="selected">通常</option>
-            <option value="dsc">指定する</option>
-        </select>
-        <input type="text" id="moj" class="dsb">
-        <br>
-        スプリット<a class="help" id="q5">？</a><br>
-        <select id="cut" style="color: rgb(255, 118, 39);">
-            <option value="def" selected="selected">通常</option>
-            <option value="dsc">指定する</option>
-        </select>
-        <input type="text" id="split" value="/">
-        <br>
-        スプリット出力数固定<a class="help" id="q8">？</a><br>
-        <select id="sko" style="color: rgb(255, 118, 39);">
-            <option value="def" selected="selected">通常</option>
-            <option value="dsc">指定する</option>
-        </select>
-        <input type="text" id="skosuu" value="1">
-        <br>
-        作者Twitterの掲載<a class="help" id="q9">？</a><br>
-        <label for="au"><input type="checkbox" id="au"> オンにする</label>
-        <br>
-        <input type="text" id="author" placeholder="スクリーンネーム">
-        <br>
-        クエリ指定モード<a class="help" id="q6">？</a><br>
-        <label for="qu"><input type="checkbox" id="qu"> オンにする</label>
-        <br>
-        <input type="text" id="query" value="ran=">
-        <br><a class="clear" onclick="$('aside').hide()">出力のクリア</a>
-        <div id="area"></div>
-        <a class="gen">作成</a>
+      文字数オプション<a class="help" id="q4">？</a><br />
+      <select id="mjs" style="color: rgb(255, 118, 39)">
+        <option value="def" selected="selected">通常</option>
+        <option value="dsc">指定する</option>
+      </select>
+      <input type="text" id="moj" class="dsb" />
+      <br />
+      スプリット<a class="help" id="q5">？</a><br />
+      <select id="cut" style="color: rgb(255, 118, 39)">
+        <option value="def" selected="selected">通常</option>
+        <option value="dsc">指定する</option>
+      </select>
+      <input type="text" id="split" value="/" />
+      <br />
+      スプリット出力数固定<a class="help" id="q8">？</a><br />
+      <select id="sko" style="color: rgb(255, 118, 39)">
+        <option value="def" selected="selected">通常</option>
+        <option value="dsc">指定する</option>
+      </select>
+      <input type="text" id="skosuu" value="1" />
+      <br />
+      作者Twitterの掲載<a class="help" id="q9">？</a><br />
+      <label for="au"><input type="checkbox" id="au" /> オンにする</label>
+      <br />
+      <input type="text" id="author" placeholder="スクリーンネーム" />
+      <br />
+      クエリ指定モード<a class="help" id="q6">？</a><br />
+      <label for="qu"><input type="checkbox" id="qu" /> オンにする</label>
+      <br />
+      <input type="text" id="query" value="ran=" />
+      <br /><a class="clear" onclick="$('aside').hide()">出力のクリア</a>
+      <div id="area"></div>
+      <a class="gen">作成</a>
     </form>
-</body></html>
+  </body>
+</html>

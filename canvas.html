@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF8" />
+    <title>じゃばすくりぷと</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <style type="text/css">
+      body {
+        margin: 0px;
+        font-size: 18px;
+        background-image: none;
+      }
+      #alert_area {
+        position: fixed;
+        z-index: 10001;
+      }
+      .alert {
+        font-size: 12px;
+        border-radius: 5px;
+        border: 1px solid #000000;
+        box-shadow: 1px 1px 4px 0 #00000055;
+        background: #ffffffdd;
+        margin: 8px;
+        padding: 5px;
+        width: 200px;
+        cursor: pointer;
+      }
+      .alert:hover {
+        background: #ffffffff;
+      }
+      .alert section {
+        text-align: right;
+        font-size: 11px;
+        color: #ccc;
+      }
+      #panel,
+      #panel_hidden {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        border: 1px solid black;
+        padding: 5px;
+        border-radius: 4px;
+        box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
+        opacity: 0.7;
+        background: white;
+        z-index: 10010;
+      }
+      #panel:hover {
+        opacity: 0.9;
+      }
+      #panel_hidden {
+        display: none;
+      }
+      #panel a,
+      #panel_hidden a {
+        text-decoration: none;
+        color: black;
+        background: #ddd;
+        padding: 3px 6px;
+        border: 1px solid #888;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #panel a:hover {
+        border-color: black;
+        background: #fff;
+      }
+      #panel_hidden a:hover {
+        border-color: black;
+        background: #fff;
+      }
+
+      #info {
+        font-size: 14px;
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        padding: 5px;
+        border-radius: 0px 4px 0 0;
+        box-shadow: 0px 0px 3px 0 rgba(0, 0, 0, 0.8);
+        opacity: 0.7;
+        background: white;
+        z-index: 10011;
+      }
+      #info:hover {
+        opacity: 1;
+      }
+      #info_size:before {
+        content: "サイズ:";
+      }
+
+      .pu {
+        font-size: 13px;
+        position: fixed;
+        right: 0;
+        border: 1px solid black;
+        padding: 10px;
+        margin: 20px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
+        background: #eeeeeebb;
+        z-index: 10009;
+        display: none;
+        width: 240px;
+      }
+      .pu:hover {
+        background: #eeeeeeff;
+      }
+      .pu header {
+        font-size: 18px;
+        padding-bottom: 5px;
+        border-bottom: 2px solid #444;
+        margin-bottom: 5px;
+      }
+      .pu a {
+        background: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          color-stop(1, #d5f1fb),
+          color-stop(0, #ecf8fe)
+        );
+        background: -webkit-linear-gradient(#ecf8fe, #d5f1fb);
+        background: -moz-linear-gradient(#ecf8fe, #d5f1fb);
+        background: -o-linear-gradient(#ecf8fe, #d5f1fb);
+        background: -ms-linear-gradient(#ecf8fe, #d5f1fb);
+        background: linear-gradient(#ecf8fe, #d5f1fb);
+        border: 1px solid black;
+        padding: 2px 6px;
+        border-radius: 3px;
+        cursor: pointer;
+        margin: 0 3px;
+        font-size: 13px;
+      }
+      .pu a:hover {
+        background: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          color-stop(0, #d5f1fb),
+          color-stop(1, #9bd6f2)
+        );
+        background: -webkit-linear-gradient(#d5f1fb, #9bd6f2);
+        background: -moz-linear-gradient(#d5f1fb, #9bd6f2);
+        background: -o-linear-gradient(#d5f1fb, #9bd6f2);
+        background: -ms-linear-gradient(#d5f1fb, #9bd6f2);
+        background: linear-gradient(#d5f1fb, #9bd6f2);
+      }
+      .pu input {
+        position: relative;
+        top: -2px;
+        border: 1px solid black;
+        box-shadow: inset 1px 1px 1px 0 #ccc;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin: 2px;
+        font-size: 10px;
+      }
+      .pu select {
+        position: relative;
+        top: -2px;
+        border: 1px solid black;
+        box-shadow: inset 1px 1px 1px 0 #ccc;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin: 2px;
+      }
+      .pu input:hover {
+        border: 1px solid dodgerblue;
+      }
+      #pu_file {
+        margin: 40px;
+      }
+      #pu_text {
+        margin: 60px;
+      }
+      #pu_obj {
+        bottom: 0;
+        left: 0;
+        width: 310px;
+      }
+      #area img {
+        position: absolute;
+      }
+      #area img:hover {
+        box-shadow: 0px 0px 2px 2px darkgreen;
+      }
+      #area span {
+        cursor: default;
+        position: absolute;
+      }
+      #area span:hover {
+        box-shadow: 0px 0px 2px 2px navy;
+      }
+      #stalk {
+        font-size: 14px;
+        position: fixed;
+        border: 1px solid black;
+        border-radius: 4px;
+        color: white;
+        background: #888;
+        padding: 5px 10px;
+        margin: 0;
+        opacity: 0.9;
+        box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.3);
+        display: none;
+      }
+      #stalk:before {
+        content: "💡";
+      }
+    </style>
+
+    <script type="text/javascript">
+      window.onload = load;
+      function load() {
+        var body = document.getElementById("body");
+        var area = document.getElementById("area");
+
+        $("#panel_close").click(function () {
+          $("#panel").toggle();
+          $("#panel_hidden").toggle();
+        });
+        $("#panel_open").click(function () {
+          $("#panel").toggle();
+          $("#panel_hidden").toggle();
+        });
+        $("#panel_file,#file_close").click(function () {
+          $("#pu_file").toggle();
+        });
+        $("#panel_img,#img_close").click(function () {
+          $("#pu_img").toggle();
+        });
+        $("#panel_text,#text_close").click(function () {
+          $("#pu_text").toggle();
+        });
+        $("#obj_close").click(function () {
+          $("#pu_obj").toggle();
+        });
+        $(".pu").draggable();
+        $("#pu_obj").draggable({ axis: "x" });
+
+        var obj_cnt = 0;
+
+        //winsize
+        winsize();
+        window.onresize = function () {
+          winsize();
+        };
+        function winsize() {
+          var windowsize = window.innerWidth + "x" + window.innerHeight;
+          document.getElementById("info_size").innerHTML = windowsize;
+        }
+
+        //pu_img
+        document.getElementById("put_img").addEventListener("click", put_img);
+        function put_img() {
+          obj_cnt += 1;
+          var img_src = document.getElementById("img_src").value;
+          var img_obj = document.createElement("img");
+          img_obj.setAttribute("src", img_src);
+          img_obj.setAttribute("id", "obj" + obj_cnt);
+          img_obj.setAttribute("class", "obj");
+          area.appendChild(img_obj);
+          document.getElementById("obj" + obj_cnt).style.left =
+            document.getElementById("img_x").value + "px";
+          document.getElementById("obj" + obj_cnt).style.top =
+            document.getElementById("img_y").value + "px";
+          document.getElementById("obj" + obj_cnt).style.width =
+            document.getElementById("img_width").value + "px";
+          document.getElementById("obj" + obj_cnt).style.height =
+            document.getElementById("img_height").value + "px";
+          $("#obj" + obj_cnt).draggable({ stack: ".obj" });
+          $("#obj" + obj_cnt).on("dragstop", function (event, ui) {
+            objinfo(this.id);
+          });
+          $("#obj" + obj_cnt).click(function () {
+            $("#pu_obj").show();
+            objinfo(this.id);
+          });
+          $("#obj" + obj_cnt)
+            .mouseover(function () {
+              $("#stalk").show();
+              $("#stalk").html(this.id + "(画像)");
+            })
+            .mouseout(function () {
+              $("#stalk").hide();
+            });
+          document
+            .getElementById("obj" + obj_cnt)
+            .addEventListener("mousemove", function (e) {
+              var mX = e.pageX + 20;
+              var mY = e.pageY + 20;
+              document.getElementById("stalk").style.top = mY + "px";
+              document.getElementById("stalk").style.left = mX + "px";
+              document.getElementById("stalk").style.zIndex = "10002";
+            });
+          myalert(
+            "✅オブジェクト" +
+              obj_cnt +
+              "(画像)「" +
+              img_src +
+              "」を(" +
+              document.getElementById("img_x").value +
+              "," +
+              document.getElementById("img_y").value +
+              ")に配置しました"
+          );
+        }
+
+        //pu_file
+        document
+          .getElementById("file_grid")
+          .addEventListener("click", grid_turn);
+        var grid_status = 0;
+        function grid_turn() {
+          if (grid_status == 0) {
+            body.style.backgroundImage =
+              'url("http://www.lucky-bag.com//appendix/gird-layout-tips/grid.gif")';
+            grid_status = 1;
+          } else if (grid_status == 1) {
+            body.style.backgroundImage = "none";
+            grid_status = 0;
+          }
+        }
+
+        //file_del
+        document.getElementById("del").addEventListener("click", file_del);
+        function file_del() {
+          var del = document.getElementById("file_del").value;
+          if (document.getElementById("obj" + del) == null) {
+            myalert("⚠️オブジェクト" + del + "は存在しません");
+          } else if (
+            document.getElementById("obj" + del).style.display == "none"
+          ) {
+            document.getElementById("obj" + del).style.display = "block";
+            myalert(
+              "✅(削除済みのオブジェクト)削除された" + del + "を復元しました"
+            );
+          } else {
+            document.getElementById("obj" + del).style.display = "none";
+            myalert("✅オブジェクト" + del + "を削除しました");
+          }
+        }
+
+        //pu_text
+        document.getElementById("put_text").addEventListener("click", put_text);
+        function put_text() {
+          obj_cnt += 1;
+          var text_text = document.getElementById("text_text").value;
+          var text_obj = document.createElement("span");
+          text_obj.innerHTML = text_text;
+          text_obj.setAttribute("id", "obj" + obj_cnt);
+          text_obj.setAttribute("class", "obj");
+          area.appendChild(text_obj);
+          $("obj" + obj_cnt).html(text_text);
+          document.getElementById("obj" + obj_cnt).style.left =
+            document.getElementById("text_x").value;
+          document.getElementById("obj" + obj_cnt).style.top =
+            document.getElementById("text_y").value;
+          document.getElementById("obj" + obj_cnt).style.fontSize =
+            document.getElementById("text_size").value;
+          document.getElementById("obj" + obj_cnt).style.color =
+            document.getElementById("text_color").value;
+          document.getElementById("obj" + obj_cnt).style.textShadow =
+            document.getElementById("text_shadow").value;
+          document.getElementById("obj" + obj_cnt).style.fontFamily =
+            document.getElementById("text_font").value;
+          $("#obj" + obj_cnt).draggable({ stack: ".obj" });
+          $("#obj" + obj_cnt).on("dragstop", function (event, ui) {
+            objinfo(this.id);
+          });
+          $("#obj" + obj_cnt).click(function () {
+            $("#pu_obj").show();
+            objinfo(this.id);
+          });
+          $("#obj" + obj_cnt)
+            .mouseover(function () {
+              $("#stalk").show();
+              $("#stalk").html(this.id + "(テキスト)");
+            })
+            .mouseout(function () {
+              $("#stalk").hide();
+            });
+          document
+            .getElementById("obj" + obj_cnt)
+            .addEventListener("mousemove", function (e) {
+              var mX = e.pageX + 20;
+              var mY = e.pageY + 20;
+              document.getElementById("stalk").style.top = mY + "px";
+              document.getElementById("stalk").style.left = mX + "px";
+              document.getElementById("stalk").style.zIndex = "10002";
+            });
+          myalert(
+            "✅オブジェクト" +
+              obj_cnt +
+              "(テキスト)「" +
+              text_text +
+              "」を(" +
+              document.getElementById("text_x").value +
+              "," +
+              document.getElementById("text_y").value +
+              ")に配置しました"
+          );
+        }
+
+        //objinfo
+        var selected = "obj0";
+        function objinfo(string) {
+          selected = string;
+          $("#obj_objname").html(string);
+          $("#obj_objkai").html(document.getElementById(string).style.zIndex);
+          $("#obj_text").val(document.getElementById(string).innerHTML);
+          $("#obj_x").val(document.getElementById(string).style.left);
+          $("#obj_y").val(document.getElementById(string).style.top);
+          $("#obj_color").val(document.getElementById(string).style.color);
+          $("#obj_size").val(document.getElementById(string).style.fontSize);
+          $("#obj_shadow").val(
+            document.getElementById(string).style.textShadow
+          );
+          $("#obj_width").val(document.getElementById(string).style.width);
+          $("#obj_height").val(document.getElementById(string).style.height);
+          $("#obj_src").val(document.getElementById(string).src);
+          //$("#obj_deg").val( document.getElementById( string ).style.transform );
+        }
+        //document.getElementById("obj_apply").addEventListener("click", objapply);
+        $(".obj_apply").click(objapply);
+        function objapply() {
+          document.getElementById(selected).innerHTML =
+            document.getElementById("obj_text").value;
+          document.getElementById(selected).style.left =
+            document.getElementById("obj_x").value;
+          document.getElementById(selected).style.top =
+            document.getElementById("obj_y").value;
+          document.getElementById(selected).style.color =
+            document.getElementById("obj_color").value;
+          document.getElementById(selected).style.fontSize =
+            document.getElementById("obj_size").value;
+          document.getElementById(selected).style.textShadow =
+            document.getElementById("obj_shadow").value;
+          document.getElementById(selected).style.width =
+            document.getElementById("obj_width").value;
+          document.getElementById(selected).style.height =
+            document.getElementById("obj_height").value;
+          document.getElementById(selected).style.transform =
+            "rotate(" + document.getElementById("obj_deg").value + "deg)";
+          document.getElementById(selected).src =
+            document.getElementById("obj_src").value;
+
+          myalert("✅適用しました");
+          $("#alert" + alert_cnt).hide(600);
+        }
+
+        $(".allfilter_apply").click(filterapply);
+        function filterapply() {
+          var f1 = document.getElementById("obj_opacity").value;
+          var f2 = document.getElementById("obj_saturate").value;
+          var f3 = document.getElementById("obj_blur").value;
+          var f4 = document.getElementById("obj_hue").value;
+          var f5 = document.getElementById("obj_cont").value;
+          var f6 = document.getElementById("obj_bright").value;
+          var f7 = document.getElementById("obj_ds").value;
+          var f8 = document.getElementById("obj_invert").value;
+          var filter =
+            "opacity(" + f1 + ") saturate(" + f2 + ") blur(" + f3 + "px)";
+          document.getElementById(selected).style.filter = filter;
+          document.getElementById(selected).style.webkitFilter = filter;
+
+          myalert("✅フィルターを適用しました");
+          $("#alert" + alert_cnt).hide(600);
+        }
+        $(".allfilter_del").click(filterdelete);
+        function filterdelete() {
+          var filter = "none";
+          document.getElementById(selected).style.filter = filter;
+          document.getElementById(selected).style.webkitFilter = filter;
+          myalert("✅フィルターをすべて解除しました");
+        }
+
+        //obj_del
+        document.getElementById("obj_del").addEventListener("click", objdel);
+        function objdel() {
+          var del = selected;
+          if (document.getElementById(del) == null) {
+            myalert("⚠️" + del + "は存在しません(E:00349)");
+          } else if (document.getElementById(del).style.display == "none") {
+            document.getElementById(del).style.display = "block";
+            myalert(
+              "✅(削除済みのオブジェクト)削除された" + del + "を復元しました"
+            );
+          } else {
+            document.getElementById(del).style.display = "none";
+            myalert("✅" + del + "を削除しました");
+          }
+        }
+        //階層をいじるやつ
+        document
+          .getElementById("obj_zen")
+          .addEventListener("click", function () {
+            document.getElementById(selected).style.zIndex =
+              Number(document.getElementById(selected).style.zIndex) + 1;
+            objinfo(selected);
+          });
+        document
+          .getElementById("obj_hai")
+          .addEventListener("click", function () {
+            document.getElementById(selected).style.zIndex =
+              Number(document.getElementById(selected).style.zIndex) - 1;
+            objinfo(selected);
+          });
+        document
+          .getElementById("obj_saizen")
+          .addEventListener("click", function () {
+            document.getElementById(selected).style.zIndex = "9999";
+            objinfo(selected);
+          });
+        document
+          .getElementById("obj_saihai")
+          .addEventListener("click", function () {
+            document.getElementById(selected).style.zIndex = "-1";
+            objinfo(selected);
+          });
+
+        document.getElementById("save").addEventListener("click", save);
+        function save() {
+          $(".alert, .pu, #panel, #info").css("visibility", "hidden");
+          html2canvas(document.body, {
+            onrendered: function (canvas) {
+              var savename = document.getElementById("file_name").value;
+              var imgData = canvas.toDataURL();
+              document.getElementById("output").href = imgData;
+              $(".alert, .pu, #panel, #info").css("visibility", "visible");
+              myalert(
+                "💾保存が完了しました。「" +
+                  savename +
+                  "」は出力ボタンから取得できます"
+              );
+            },
+          });
+        }
+
+        //alert
+        var alert_cnt = 1;
+        function myalert(string) {
+          var alert = document.createElement("div");
+          var date = new Date();
+          var detail =
+            "alert" +
+            alert_cnt +
+            " - " +
+            date.getHours() +
+            "時" +
+            date.getMinutes() +
+            "分";
+          alert.setAttribute("id", "alert" + alert_cnt);
+          alert.setAttribute("class", "alert");
+          document
+            .getElementById("alert_area")
+            .insertBefore(alert, this.firstChild);
+          $("#alert" + alert_cnt).html(
+            string + "<section>" + detail + "</section>"
+          );
+          $("#alert" + alert_cnt).click(function () {
+            $(this).hide(200);
+          });
+          alert_cnt += 1;
+        }
+      }
+    </script>
+  </head>
+  <body id="body">
+    <div id="info">
+      <span id="info_size"></span>
+    </div>
+
+    <div id="panel">
+      <a id="panel_close">▶</a>
+      <a id="panel_file">📋ファイル</a>
+      <a id="panel_shape">📐図形</a>
+      <a id="panel_img">🖼画像</a>
+      <a id="panel_text">✏️テキスト</a>
+    </div>
+
+    <div id="panel_hidden">
+      <a id="panel_open">◀</a>
+    </div>
+
+    <div class="pu" id="pu_img">
+      <header>🖼画像<a id="img_close" style="float: right">❌</a></header>
+      画像を配置します<br />
+      ソース：<input value="url" id="img_src" /><br />
+      X座標：<input value="200" id="img_x" /> px<br />
+      Y座標：<input value="200" id="img_y" /> px<br />
+      幅：<input id="img_width" size="6" /> 高さ：<input
+        id="img_height"
+        size="6"
+      /><br />
+      <a id="prev_img">🔍プレビュー</a><a id="put_img">🔻画像を配置</a><br />
+    </div>
+
+    <div class="pu" id="pu_file">
+      <header>📋ファイル<a id="file_close" style="float: right">❌</a></header>
+      ファイルに関する設定<br />
+      <input value="名称未設定" id="file_name" size="10" />
+      <a id="save">💾保存</a><a target="_blank" id="output">📂出力</a><br />
+      ファイルを画像として保存します
+      <header></header>
+      削除：obj <input id="file_del" size="5" /><a id="del">🗑削除</a><br />
+      複製：obj <input id="file_copy" size="5" /><a id="copy">📋複製</a><br />
+      <a id="file_grid">📏背景グリッド切替</a><a id="help">📘ヘルプ</a><br />
+    </div>
+
+    <div class="pu" id="pu_text">
+      <header>✏️テキスト<a id="text_close" style="float: right">❌</a></header>
+      テキストを配置します<br />
+      <input
+        value="文字を入力"
+        id="text_text"
+        style="font-size: 20px"
+        size="15"
+      /><br />
+      X座標：<input value="250px" id="text_x" size="6" /> Y座標：<input
+        value="250px"
+        id="text_y"
+        size="6"
+      /><br />
+      カラー：<input value="#000000" id="text_color" /><a
+        id="colorpalette"
+        alt="パレット"
+        >🎨</a
+      ><br />
+      フォント：<select name="text_font" id="text_font">
+        <option value="sans-serif">ゴシック</option>
+        <option value="serif">明朝</option>
+        <option value="monospace">等幅フォント</option>
+        <option value="'ヒラギノ角ゴ Std W8'">任意のフォント...</option></select
+      ><br />
+      　→<input id="fontname" value="ヒラギノ角ゴ Std W8" /><br />
+      サイズ：<input id="text_size" value="20px" /><br />
+      影：<input id="text_shadow" value="none" /><br />
+      <a id="prev_text">🔍プレビュー</a><a id="put_text">🔻テキストを配置</a
+      ><br />
+    </div>
+
+    <div class="pu" id="pu_obj">
+      <div style="text-align: right">
+        <a id="obj_close" style="float: right">❌</a
+        ><a id="obj_refresh" style="float: right">⌛️更新</a>
+      </div>
+      <header>🕹<strong id="obj_objname">[未定義]</strong>の操作</header>
+      オブジェクト操作：
+      <a id="obj_del">🗑削除</a><a id="obj_copy">📋複製</a><br />
+      現在の階層：<span id="obj_objkai"></span> <a id="obj_zen">⬆️</a
+      ><a id="obj_hai">⬇️</a><br />
+      <a id="obj_saizen">⬆️最前面へ</a><a id="obj_saihai">⬇️最背面へ</a>
+      <header></header>
+      X座標：<input value="150px" id="obj_x" size="6" /> Y座標：<input
+        value="150px"
+        id="obj_y"
+        size="6"
+      /><br />
+      <input value="文字を入力" id="obj_text" style="font-size: 20px" /><br />
+      カラー：<input value="#000000" id="obj_color" /><a
+        id="colorpalette2"
+        title="パレット"
+        >🎨</a
+      ><br />
+      フォント：<select name="obj_font" id="text_font">
+        <option value="sans-serif">ゴシック</option>
+        <option value="serif">明朝</option>
+        <option value="monospace">等幅フォント</option>
+        <option value="'ヒラギノ角ゴ Std W8'">任意のフォント...</option></select
+      ><br />
+      サイズ：<input id="obj_size" value="20px" size="6" /> 影：<input
+        id="obj_shadow"
+        value="none"
+        size="6"
+      /><a class="obj_apply">🔻適用</a>
+      <header></header>
+      幅：<input id="obj_width" size="6" /> 高さ：<input
+        id="obj_height"
+        size="6"
+      />
+      角度：<input id="obj_deg" size="4" /><br />
+      ソース切替：<input value="url" id="obj_src" /><a class="obj_apply"
+        >🔻適用</a
+      >
+      <header></header>
+      フィルター<br />
+      透明度：<input
+        id="obj_opacity"
+        size="6"
+        value="1.0"
+        class="filter_apply"
+      />
+      彩度：<input
+        id="obj_saturate"
+        size="6"
+        value="1.0"
+        class="filter_apply"
+      /><br />
+      ぼかし：<input id="obj_blur" size="6" value="0" class="filter_apply" />
+      色相：<input id="obj_hue" size="6" value="0" class="filter_apply" /><br />
+      コントラスト：<input
+        id="obj_cont"
+        size="6"
+        value="1.0"
+        class="filter_apply"
+      />
+      明度：<input
+        id="obj_bright"
+        size="6"
+        value="1.0"
+        class="filter_apply"
+      /><br />
+      シャドウ：<input
+        id="obj_ds"
+        value="0px 0px 0px white"
+        class="filter_apply"
+      /><br />
+      色の反転：<input
+        id="obj_invert"
+        size="6"
+        value="0"
+        class="filter_apply"
+      />
+      <a id="prev_objimg">🔍</a><br />
+      <a class="allfilter_del">⛔️フィルター全解除</a
+      ><a class="allfilter_apply">🖍フィルター適用</a><br />
+    </div>
+
+    <div id="alert_area"></div>
+
+    <div id="area"></div>
+
+    <div id="stalk">(未定義)</div>
+  </body>
+</html>

@@ -1,221 +1,251 @@
 <!DOCTYPE html>
 <html lang="ja">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>クソ診断ジェネレータ</title>
     <script src="./jquery.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1"
+    />
     <style type="text/css">
-        body {
-            margin: 0;
-            font-family: "游ゴシック体", YuGothic, "游ゴシック Medium", "Yu Gothic Medium", "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
-            background: rgb(255, 253, 230);
-            padding-bottom: 20px;
-        }
+      body {
+        margin: 0;
+        font-family: "游ゴシック体", YuGothic, "游ゴシック Medium",
+          "Yu Gothic Medium", "游ゴシック", "Yu Gothic", "メイリオ", sans-serif;
+        background: rgb(255, 253, 230);
+        padding-bottom: 20px;
+      }
 
-        header {
-            font-size: 18px;
-            max-width: 412px;
-            padding: 10px;
-            box-shadow: 0px 1px 10px rgba(0, 0, 0, .3);
-            background: white;
+      header {
+        font-size: 18px;
+        max-width: 412px;
+        padding: 10px;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
+        background: white;
+      }
 
-        }
+      header span {
+        color: gray;
+        font-size: 14px;
+        float: right;
+      }
 
-        header span {
-            color: gray;
-            font-size: 14px;
-            float: right;
-        }
+      form {
+        margin: 0px;
+        padding: 12px;
+        border-radius: 4px;
+        max-width: 400px;
+      }
 
-        form {
-            margin: 0px;
-            padding: 12px;
-            border-radius: 4px;
-            max-width: 400px;
-        }
+      #tx {
+        font-size: 20px;
+        border: 1px solid black;
+        padding: 6px;
+        border-radius: 4px;
+        box-shadow: inset 1px 1px 3px silver;
+        margin-bottom: 5px;
+        width: 200px;
+      }
 
-        #tx {
-            font-size: 20px;
-            border: 1px solid black;
-            padding: 6px;
-            border-radius: 4px;
-            box-shadow: inset 1px 1px 3px silver;
-            margin-bottom: 5px;
-            width: 200px;
-        }
+      select {
+        font-size: 14px;
+        background: white;
+        padding: 4px;
+        border: 1px solid black;
+        border-radius: 4px;
+        margin: 2px;
+        box-shadow: 1px 1px 1px silver;
+        margin-bottom: 5px;
+      }
 
-        select {
-            font-size: 14px;
-            background: white;
-            padding: 4px;
-            border: 1px solid black;
-            border-radius: 4px;
-            margin: 2px;
-            box-shadow: 1px 1px 1px silver;
-            margin-bottom: 5px;
-        }
+      .gen {
+        cursor: pointer;
+        float: right;
+        background: dodgerblue;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        position: relative;
+        top: -8px;
+      }
 
-        .gen {
-            cursor: pointer;
-            float: right;
-            background: dodgerblue;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            position: relative;
-            top : -8px;
-        }
+      aside {
+        font-size: 13px;
+        margin-top: 6px;
+        padding: 4px 10px;
+        max-width: 396px;
+        border-left: 8px solid dodgerblue;
+        background: #ffffff;
+      }
 
-        aside {
-            font-size: 13px;
-            margin-top: 6px;
-            padding: 4px 10px;
-            max-width: 396px;
-            border-left: 8px solid dodgerblue;
-            background: #ffffff;
-        }
+      .help {
+        font-size: 14px;
+        background: skyblue;
+        margin: 0px 6px;
+        cursor: pointer;
+        border-radius: 3px;
+        padding: 0px 1px;
+        color: black;
+      }
 
-        .help {
-            font-size: 14px;
-            background: skyblue;
-            margin: 0px 6px;
-            cursor: pointer;
-            border-radius: 3px;
-            padding: 0px 1px;
-            color: black;
-        }
+      a {
+        color: dodgerblue;
+      }
 
-        a {
-            color: dodgerblue;
-        }
+      a:hover,
+      label:hover {
+        opacity: 0.5;
+      }
 
-        a:hover,
-        label:hover {
-            opacity: .5;
-        }
+      .hs {
+        cursor: pointer;
+        text-decoration: underline;
+        color: dodgerblue;
+        display: inline-block;
+        padding: 3px;
+      }
 
-        .hs {
-            cursor: pointer;
-            text-decoration: underline;
-            color: dodgerblue;
-            display: inline-block;
-            padding: 3px;
-        }
+      #h {
+        display: none;
+        border: 1px solid gray;
+        padding: 0 6px;
+        margin: 10px 4px;
+        border-radius: 8px;
+      }
 
-        #h {
-            display: none;
-            border: 1px solid gray;
-            padding: 0 6px;
-            margin: 10px 4px;
-            border-radius: 8px;
+      #split,
+      #moj,
+      #query,
+      #sname,
+      #skosuu,
+      #author,
+      #before,
+      #after {
+        font-size: 16px;
+        border: 1px solid black;
+        padding: 4px;
+        border-radius: 4px;
+        box-shadow: inset 1px 1px 3px silver;
+        margin-left: 5px;
+        width: 60px;
+      }
 
-        }
+      #query,
+      #sname,
+      #author {
+        margin: 0;
+        width: 200px;
+        margin-bottom: 5px;
+      }
 
-        #split,
-        #moj,
-        #query,
-        #sname,
-        #skosuu,
-        #author,
-        #before,
-        #after {
-            font-size: 16px;
-            border: 1px solid black;
-            padding: 4px;
-            border-radius: 4px;
-            box-shadow: inset 1px 1px 3px silver;
-            margin-left: 5px;
-            width: 60px;
-        }
+      .dsb {
+        color: #303030;
+      }
 
-        #query,
-        #sname,
-        #author {
-            margin: 0;
-            width: 200px;
-            margin-bottom: 5px;
-        }
-
-        .dsb {
-            color: #303030;
-        }
-
-        #forpc {
-            float: right;
-            display: none;
-        }
+      #forpc {
+        float: right;
+        display: none;
+      }
     </style>
     <script src="./kusogen.js"></script>
-</head>
+  </head>
 
-<body>
-    <header><strong>クソ診断ジェネレータ<a class="help" id="q0">？</a></strong><span>作成:@mt_sgi</span></header>
+  <body>
+    <header>
+      <strong>クソ診断ジェネレータ<a class="help" id="q0">？</a></strong
+      ><span>作成:@mt_sgi</span>
+    </header>
     <form onsubmit="return false;">
-        <a id="forpc" href="kusogenpc.html">PC版はこちら</a>
-        対象の文字列<a class="help" id="q1">？</a><br>
-        <input type="text" id="tx" value=""><br>
-        文字数<a class="help" id="q2">？</a><br>
-        <select id="opt">
-            <option value="ran">ランダム文字数</option>
-            <option value="fix" selected>文字数固定</option>
-        </select>
-        <br>
-        診断名を指定する<a class="help" id="q7">？</a><br>
-        <label for="sn"><input type="checkbox" id="sn"> オンにする</label>
-        <br>
-        <input type="text" id="sname" placeholder="すごい診断" style="width:200px">
-        <br><a class="hs" onclick="$('#h').toggle()">高度な設定</a> <a class="hs" onclick="$('aside').hide()">出力のクリア</a>
-        <a class="gen">作成</a>
-        <div id="h">
-            先頭と末尾<a class="help" id="q10">？</a><br>
-            先頭<br>
-            <input type="text" id="before" placeholder="先頭" style="width:200px"><br>
-            末尾<br>
-            <input type="text" id="after" placeholder="末尾" style="width:200px"><br>
-            ヒント：「<a id="namaemoji"></a>」を使うと入力された名前を表示させることができます。<br>
-            言語<a class="help" id="q3">？</a><br>
-            <select>
-                <option>日本語</option>
-            </select><br>
+      <a id="forpc" href="kusogenpc.html">PC版はこちら</a>
+      対象の文字列<a class="help" id="q1">？</a><br />
+      <input type="text" id="tx" value="" /><br />
+      文字数<a class="help" id="q2">？</a><br />
+      <select id="opt">
+        <option value="ran">ランダム文字数</option>
+        <option value="fix" selected>文字数固定</option>
+      </select>
+      <br />
+      診断名を指定する<a class="help" id="q7">？</a><br />
+      <label for="sn"><input type="checkbox" id="sn" /> オンにする</label>
+      <br />
+      <input
+        type="text"
+        id="sname"
+        placeholder="すごい診断"
+        style="width: 200px"
+      />
+      <br /><a class="hs" onclick="$('#h').toggle()">高度な設定</a>
+      <a class="hs" onclick="$('aside').hide()">出力のクリア</a>
+      <a class="gen">作成</a>
+      <div id="h">
+        先頭と末尾<a class="help" id="q10">？</a><br />
+        先頭<br />
+        <input
+          type="text"
+          id="before"
+          placeholder="先頭"
+          style="width: 200px"
+        /><br />
+        末尾<br />
+        <input
+          type="text"
+          id="after"
+          placeholder="末尾"
+          style="width: 200px"
+        /><br />
+        ヒント：「<a id="namaemoji"></a
+        >」を使うと入力された名前を表示させることができます。<br />
+        言語<a class="help" id="q3">？</a><br />
+        <select>
+          <option>日本語</option></select
+        ><br />
 
-            文字数オプション<a class="help" id="q4">？</a><br>
-            <select id="mjs">
-                <option value="def" selected>通常</option>
-                <option value="dsc">指定する</option>
-            </select>
-            <input type="text" id="moj" class="dsb" value="">
-            <br>
-            スプリット<a class="help" id="q5">？</a><br>
-            <select id="cut">
-                <option value="def" selected>通常</option>
-                <option value="dsc">指定する</option>
-            </select>
-            <input type="text" id="split" value="/">
-            <br>
-            スプリット出力数固定<a class="help" id="q8">？</a><br>
-            <select id="sko">
-                <option value="def" selected>通常</option>
-                <option value="dsc">指定する</option>
-            </select>
-            <input type="text" id="skosuu" value="1">
-            <br>
-            作者Twitterの掲載<a class="help" id="q9">？</a><br>
-            <label for="au"><input type="checkbox" id="au"> オンにする</label>
-            <br>
-            @<input type="text" id="author" placeholder="TwitterJP" value="" style="width:180px">
-            <br>
-            クエリ指定モード<a class="help" id="q6">？</a><br>
-            <label for="qu"><input type="checkbox" id="qu"> オンにする</label>
-            <br>
-            <input type="text" id="query" value="ran=" style="width:200px">
-            <br><a class="hs" onclick="$('aside').hide()">出力のクリア</a> <a class="hs" onclick="$('aside').show()">復元</a>
-            <br><a class="hs" onclick="localStorage.removeItem('kusogenName')">名前記憶をクリア</a>
-            <a class="gen">作成</a>
-        </div>
+        文字数オプション<a class="help" id="q4">？</a><br />
+        <select id="mjs">
+          <option value="def" selected>通常</option>
+          <option value="dsc">指定する</option>
+        </select>
+        <input type="text" id="moj" class="dsb" value="" />
+        <br />
+        スプリット<a class="help" id="q5">？</a><br />
+        <select id="cut">
+          <option value="def" selected>通常</option>
+          <option value="dsc">指定する</option>
+        </select>
+        <input type="text" id="split" value="/" />
+        <br />
+        スプリット出力数固定<a class="help" id="q8">？</a><br />
+        <select id="sko">
+          <option value="def" selected>通常</option>
+          <option value="dsc">指定する</option>
+        </select>
+        <input type="text" id="skosuu" value="1" />
+        <br />
+        作者Twitterの掲載<a class="help" id="q9">？</a><br />
+        <label for="au"><input type="checkbox" id="au" /> オンにする</label>
+        <br />
+        @<input
+          type="text"
+          id="author"
+          placeholder="TwitterJP"
+          value=""
+          style="width: 180px"
+        />
+        <br />
+        クエリ指定モード<a class="help" id="q6">？</a><br />
+        <label for="qu"><input type="checkbox" id="qu" /> オンにする</label>
+        <br />
+        <input type="text" id="query" value="ran=" style="width: 200px" />
+        <br /><a class="hs" onclick="$('aside').hide()">出力のクリア</a>
+        <a class="hs" onclick="$('aside').show()">復元</a> <br /><a
+          class="hs"
+          onclick="localStorage.removeItem('kusogenName')"
+          >名前記憶をクリア</a
+        >
+        <a class="gen">作成</a>
+      </div>
     </form>
     <div id="area"></div>
-</body>
-
+  </body>
 </html>

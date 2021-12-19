@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF8" />
+    <title>mOS R7</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous"
+    />
+    <script src="jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+    <style type="text/css">
+      body {
+        margin: 0px;
+        padding-top: 10px;
+        padding-bottom: 25px;
+        font-size: 16px;
+        background: url("bgp.jpg");
+        background-attachment: fixed;
+        color: white;
+        text-shadow: 0px 1px 3px black;
+        font-weight: 400;
+      }
+
+      header {
+        position: fixed;
+        font-size: 15px;
+        background: rgba(0, 0, 0, 0.9);
+        color: #dddddd;
+        width: 100%;
+        top: 0;
+        left: 0;
+      }
+
+      footer {
+        display: none;
+        position: fixed;
+        font-size: 15px;
+        background: rgba(0, 0, 0, 0.9);
+        color: #dddddd;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+      }
+
+      footer h1 {
+        padding: 0 10px;
+        cursor: pointer;
+      }
+
+      a {
+        color: white;
+      }
+
+      .ntf {
+        background: #ffffffe0;
+        color: black;
+        text-shadow: none;
+        border: 3px solid white;
+        padding: 4px;
+        margin: 10px 2px;
+        border-radius: 4px;
+      }
+
+      .ntf_title {
+        font-size: 12px;
+        color: #606060;
+        display: block;
+      }
+
+      section {
+        padding: 20px;
+      }
+
+      h5 {
+        margin: 5px 0px;
+      }
+
+      .button {
+        background: #1184f4;
+        border: 2px solid #024b91;
+        border-radius: 5px;
+        text-align: center;
+        padding: 6px;
+        margin: 10px;
+        cursor: pointer;
+      }
+
+      .button:hover {
+        background: #1070cc;
+      }
+
+      aside {
+        border-left: 8px solid lightgreen;
+        font-size: 15px;
+        padding: 5px 10px;
+        font-weight: 700;
+        background: rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+      }
+
+      footer h1:hover {
+        opacity: 0.7;
+      }
+
+      .fa-toggle-on {
+        display: block;
+        padding: 18px 6px;
+        border-bottom: 1px solid #ffffff66;
+        color: lightgreen;
+      }
+
+      .fa-toggle-on:before {
+        float: right;
+        font-size: 30px;
+        line-height: 50%;
+        color: lightgreen;
+      }
+
+      .fa-toggle-off {
+        display: block;
+        padding: 18px 6px;
+        border-bottom: 1px solid #ffffff66;
+      }
+
+      .fa-toggle-off:before {
+        float: right;
+        font-size: 30px;
+        line-height: 50%;
+        color: white;
+      }
+
+      .fa-toggle-on:hover,
+      .fa-toggle-off:hover {
+        background: #ffffff50;
+      }
+
+      .fa-check {
+        display: block;
+        padding: 18px 6px;
+        border-bottom: 1px solid #ffffff66;
+        color: lightgreen;
+      }
+
+      .fa-check:before {
+        float: right;
+        font-size: 30px;
+        line-height: 50%;
+        color: lightgreen;
+      }
+
+      .fa-minus {
+        display: block;
+        padding: 18px 6px;
+        border-bottom: 1px solid #ffffff66;
+      }
+
+      .fa-minus:before {
+        float: right;
+        font-size: 30px;
+        line-height: 50%;
+        color: white;
+      }
+
+      .fa-check:hover,
+      .fa-minus:hover {
+        background: #ffffff50;
+      }
+
+      .click {
+        display: block;
+        padding: 18px 6px;
+        border-bottom: 1px solid #ffffff66;
+      }
+
+      .click:before {
+        float: right;
+        font-size: 30px;
+        line-height: 50%;
+        color: white;
+      }
+
+      .click:hover {
+        color: lightgreen;
+        background: #ffffff50;
+      }
+
+      #head_right {
+        float: right;
+      }
+
+      #bootup h3 {
+        text-align: center;
+        margin: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid white;
+      }
+
+      #bootup_unlock {
+        cursor: pointer;
+        transition: ease 0.3s;
+      }
+
+      #bootup_unlock:hover {
+        opacity: 0.7;
+        color: yellow;
+        padding-left: 10px;
+      }
+
+      #bootup_time {
+        font-size: 55px;
+        font-weight: 100;
+      }
+
+      #bootup_info {
+        font-size: 13px;
+      }
+
+      #bootup_ua {
+        font-size: 12px;
+      }
+
+      .approw {
+        padding: 0 10px;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+      }
+
+      .app {
+        text-align: center;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
+      .app:hover {
+        opacity: 0.7;
+        color: yellow;
+      }
+
+      .app i {
+        font-size: 30px;
+        padding: 6px;
+        text-align: center;
+      }
+
+      #alert {
+        display: none;
+      }
+
+      #alert_black {
+        background: rgba(0, 0, 0, 0.5);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #alert_box {
+        position: fixed;
+        top: 50px;
+        color: black;
+        text-shadow: none;
+        background: white;
+        box-sizing: border-box;
+        left: 10%;
+        width: 80%;
+        border-radius: 6px;
+        box-shadow: 2px 2px 10px 0 black;
+        padding: 14px;
+      }
+
+      #alert_title {
+        font-size: 20px;
+        border-bottom: 2px silver solid;
+        margin-bottom: 10px;
+      }
+
+      #alert_close {
+        margin-top: 20px;
+        color: white;
+      }
+
+      #alert .click {
+        border-bottom: 1px solid black;
+        padding: 8px;
+      }
+
+      #alert .click:before {
+        text-shadow: 1px 1px 3px black;
+        font-size: 18px;
+      }
+
+      #home {
+        transition: ease-in-out 0.5s;
+      }
+
+      #home_settings {
+        position: relative;
+        top: -20px;
+      }
+
+      #browser_url {
+        width: 95%;
+        border: 2px solid whitesmoke;
+        font-size: 16px;
+        padding: 4px;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px #00000066;
+        margin: 15px 0;
+        font-weight: 200;
+        background: #444;
+        color: white;
+      }
+
+      #browser_return {
+        float: right;
+        background: dodgerblue;
+        padding: 12px;
+        border: 2px solid white;
+        border-radius: 999px;
+        position: absolute;
+        top: 40px;
+        right: 10px;
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+      }
+
+      #browser_frame {
+        position: fixed;
+        top: 120px;
+        left: 0;
+        height: calc(100% - 120px);
+        width: 100%;
+        background: #ffffffaa;
+        border: none;
+        z-index: -1;
+      }
+
+      #browser_toolbox {
+        position: relative;
+        top: -5px;
+      }
+
+      #browser_toolbox a {
+        cursor: pointer;
+        text-decoration: underline;
+        font-size: 14px;
+        margin: 0px 5px;
+      }
+
+      #browser_menu {
+        display: none;
+        position: absolute;
+        background: #404040;
+        width: 60%;
+        box-shadow: 1px 1px 13px black;
+      }
+
+      #browser_menu a {
+        font-size: 14px;
+        display: block;
+        padding: 10px;
+      }
+
+      #browser_menu a:hover {
+        background: #707070;
+      }
+
+      #settings input {
+        width: 100%;
+        font-size: 16px;
+        padding: 6px 0;
+        margin-top: 16px;
+        border: 1px solid white;
+        border-radius: 5px;
+        background: #00000050;
+        color: white;
+        text-shadow: 0px 1px 3px black;
+      }
+
+      #twitter_text {
+        background: #404040;
+        color: white;
+        border: 2px solid white;
+      }
+
+      #footicon {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        padding: 0px;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+      }
+
+      #footicon div {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      #footicon div:hover {
+        color: #ffff80;
+      }
+
+      .title_right {
+        position: absolute;
+        right: 20px;
+        font-size: 15px;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      .title_right:hover {
+        color: skyblue;
+      }
+
+      .textbox {
+        width: calc(100% - 12px);
+        padding: 6px;
+        font-size: 15px;
+        border: 2px solid #404040;
+        border-radius: 3px;
+        margin-top: 10px;
+      }
+    </style>
+    <script type="text/javascript">
+      page("bootup");
+      var SystemName = "mOS R7";
+      var prev = "bootup";
+      var curr = "bootup";
+      var noticeNum = 0;
+      $(document).ready(Load);
+      function Load() {
+        page("home");
+        clock();
+        noti("wifi", "利用可能なネットワークがあります。");
+        var clockmove = setInterval(clock, 500);
+        $("#head_device").html(window.navigator.platform);
+        $("#bootup_info").html("on " + window.navigator.appName);
+
+        $("header").click(function () {
+          $("footer").slideDown("slow");
+        });
+        $("footer").click(function () {
+          $("footer").slideUp("slow");
+        });
+
+        $(".toggle").click(function () {
+          if ($(this).hasClass("fa-toggle-off")) {
+            $(this).removeClass("fa-toggle-off");
+            $(this).addClass("fa-toggle-on");
+          } else {
+            $(this).removeClass("fa-toggle-on");
+            $(this).addClass("fa-toggle-off");
+          }
+        });
+        $(".cbox").click(function () {
+          if ($(this).hasClass("fa-minus")) {
+            $(this).removeClass("fa-minus");
+            $(this).addClass("fa-check");
+          } else {
+            $(this).removeClass("fa-check");
+            $(this).addClass("fa-minus");
+          }
+        });
+
+        $(".home").click(function () {
+          page("home");
+        });
+        $(".back").click(function () {
+          back();
+        });
+
+        $(".wifi").click(function () {
+          page("wifi");
+        });
+
+        $(".bootup").click(function () {
+          page("bootup");
+        });
+        $(".browser").click(function () {
+          page("browser");
+        });
+        $(".settings").click(function () {
+          page("settings");
+        });
+        $(".file").click(function () {
+          page("file");
+        });
+        $(".mos").click(function () {
+          page("mos");
+          noti("mos", "ターミナルでプロセスを実行中です");
+        });
+        $(".viwmxa").click(function () {
+          page("viwmxa");
+        });
+        $(".phone").click(function () {
+          page("phone");
+        });
+        $(".twitter").click(function () {
+          page("twitter");
+        });
+
+        //home
+        $("#home_set").click(function () {
+          $("#home").css("transform", "scale(0.7)");
+          $("#home").css("box-shadow", "0px 0px 12px black");
+          $("#home_settings").show();
+        });
+        $("#home_setback").click(function () {
+          $("#home").css("transform", "scale(1.0)");
+          $("#home").css("box-shadow", "none");
+          $("#home_settings").hide();
+        });
+        //browser
+        $("#browser_return").click(function () {
+          $("#browser_frame").attr("src", $("#browser_url").val());
+        });
+        $("body").click(function () {
+          //$("#browser_url").toggle();
+          //$("#browser_return").toggle();
+        });
+        //settings
+        $("#settings_ts").click(function () {
+          if ($(this).hasClass("fa-toggle-off")) {
+            noti("settings", "テキストシャドウが無効になりました");
+            $("body").css("text-shadow", "none");
+          } else $("body").css("text-shadow", "0px 1px 3px black");
+        });
+        $("#settings_bgs1").click(function () {
+          $("body").css(
+            "background",
+            'url("' + $("#settings_bgvalue_1").val() + '")'
+          );
+        });
+        $("#settings_bgs2").click(function () {
+          $("body").css("background", $("#settings_bgvalue_2").val());
+        });
+        $("#settings_font").click(function () {
+          $("body").css("font", $("#settings_fontvalue").val());
+        });
+        $("#settings_fontfamily").click(function () {
+          $("body").css("font-family", $("#settings_fontfamilyvalue").val());
+        });
+        //mos
+        $("#mos_exec").click(function () {
+          $("#mos_term").append(
+            "System:" + SystemName + "<br>$prev[" + prev + "]<br>"
+          );
+          for (var prop in window.navigator) {
+            var propin = window.navigator[prop];
+            $("#mos_term").append(prop + ":" + propin + "<br>");
+          }
+        });
+        //viw
+        var form = document.forms.myform;
+        form.myfile.addEventListener("change", function (e) {
+          var result = e.target.files[0];
+          $("#viw_filename").html(result.name);
+          var reader = new FileReader();
+          reader.readAsText(result);
+          reader.addEventListener("load", function () {
+            $("#viw_preview").html(reader.result);
+          });
+        });
+
+        //alert
+        $("#alert_close").click(function () {
+          $("#alert").toggle();
+        });
+        $("#alert_black").click(function () {
+          $("#alert").toggle();
+        });
+        //footer
+        $("#ntf_del").click(function () {
+          $(".ntf").hide(300);
+          noticeNum = 0;
+          $("#numofntf").html("通知はありません");
+        });
+
+        $("a").click(function () {
+          if (this.href) {
+            alr(
+              "リンクの確認",
+              "リンク先を確認の上進行してください。システムに戻る場合は「OK」を押下してください。<br>" +
+                this.href +
+                "<a href='" +
+                this.href +
+                "'><div class='button'>リンク先へ進む</div></a>"
+            );
+            return false;
+          }
+        });
+      }
+      function clock() {
+        DD = new Date();
+        var Hour = ("00" + DD.getHours()).slice(-2);
+        var Min = ("00" + DD.getMinutes()).slice(-2);
+        var Sec = ("00" + DD.getSeconds()).slice(-2);
+        $("#head_time").html(Hour + ":" + Min + ":" + Sec);
+        $("#twitter_time").html(Hour + ":" + Min + ":" + Sec);
+        $("#bootup_time").html(Hour + ":" + Min);
+      }
+      function page(target) {
+        if (curr == "home") $("#home_setback").click();
+        $("section").hide();
+        $("#" + target).show();
+        document.title = SystemName + " - " + target + ".app";
+        prev = curr;
+        curr = target;
+      }
+      function back() {
+        page(prev);
+      }
+      function noti(app, context) {
+        noticeNum += 1;
+        var ran = Math.floor(Math.random() * 9999);
+        var notification =
+          "<div class='ntf ' id='ntf" +
+          ran +
+          "'><div class='ntf_title fas fa-comment-alt'> " +
+          app +
+          "</div>" +
+          context +
+          "</div>";
+        $("#ntf_area").append(notification);
+        $("#numofntf").html("通知(" + noticeNum + ")");
+        $("#ntf" + ran).click(function () {
+          page(app);
+          $(this).hide(300);
+          noticeNum -= 1;
+          $("#numofntf").html("通知(" + noticeNum + ")");
+        });
+      }
+      function alr(title, content) {
+        $("#alert_title").html(title);
+        $("#alert_content").html(content);
+        $("#alert").show();
+      }
+    </script>
+  </head>
+
+  <body id="body">
+    <section id="bootup">
+      <h3 id="bootup_time"></h3>
+      <h3>
+        mOS R7
+        <div id="bootup_info"></div>
+      </h3>
+      <h3>
+        <a class="fas fa-arrow-circle-right home" id="bootup_unlock">
+          はじめる</a
+        >
+      </h3>
+    </section>
+
+    <section id="home">
+      <h3 class="fas fa-home">
+        ホーム
+        <a class="fas fa-cog title_right" id="home_set">設定</a>
+      </h3>
+      <ul class="approw">
+        <div class="app browser">
+          <i class="fas fa-globe"></i><br />ブラウザ
+        </div>
+        <div class="app bootup">
+          <i class="fas fa-user-lock"></i><br />ブート画面
+        </div>
+        <div class="app settings"><i class="fas fa-cog"></i><br />設定</div>
+        <div class="app store">
+          <i class="fas fa-shopping-basket"></i><br />ストア
+        </div>
+      </ul>
+      <ul class="approw">
+        <div class="app music"><i class="fas fa-music"></i><br />音楽</div>
+        <div class="app file">
+          <i class="far fa-folder-open"></i><br />ファイル
+        </div>
+        <div class="app map"><i class="fas fa-map"></i><br />地図</div>
+        <div class="app mos"><i class="fas fa-terminal"></i><br />mOS端末</div>
+      </ul>
+      <ul class="approw">
+        <div class="app viwmxa"><i class="fas fa-boxes"></i><br />VIWMxa</div>
+        <div class="app phone">
+          <i class="fas fa-phone-square"></i><br />電話
+        </div>
+        <div class="app ide"><i class="fas fa-code"></i><br />mOSIDE</div>
+        <div class="app email">
+          <i class="fas fa-mail-bulk"></i><br />eメール
+        </div>
+      </ul>
+      <ul class="approw">
+        <div class="app ntfman">
+          <i class="fas fa-comment-alt"></i><br />通知管理
+        </div>
+        <div class="app recoder">
+          <i class="fas fa-microphone-alt"></i><br />レコーダ
+        </div>
+        <div class="app editor">
+          <i class="far fa-sticky-note"></i><br />エディタ
+        </div>
+        <div class="app twitter">
+          <i class="fab fa-twitter"></i><br />Twitter
+        </div>
+      </ul>
+    </section>
+
+    <section id="home_settings">
+      <h3 class="fas fa-cog">
+        ホーム画面の設定
+        <a class="fas fa-arrow-circle-left title_right" id="home_setback"
+          >戻る</a
+        >
+      </h3>
+      <br />
+      <div class="fas fa-toggle-on toggle">回転を許可</div>
+      <div class="fas fa-toggle-on toggle">大きいアイコンを使用</div>
+      <div class="fas fa-toggle-off toggle">ドックの表示</div>
+      <div class="fas fa-toggle-off toggle">ダブルタップロック</div>
+    </section>
+
+    <section id="wifi">
+      <h3 class="fas fa-wifi">WiFi</h3>
+      <br />
+      <div class="fas fa-toggle-on toggle">WiFi</div>
+      <h5>検出されたネットワークの一覧</h5>
+      <div class="fas fa-check cbox">NETWORK0002</div>
+      <div class="fas fa-minus cbox">free_wifispot</div>
+      <div class="fas fa-minus cbox">softbank0001</div>
+      <div class="fas fa-minus cbox">ODV4KLSNF8XS</div>
+      <a class="fas fa-search title_right" id="wifi_search">再検索</a>
+      <h5>マニュアル追加</h5>
+      <div class="fas fa-caret-right click">手動で追加</div>
+    </section>
+
+    <section id="browser">
+      <input id="browser_url" class="fas fa-lock" value="about:blank" />
+      <div id="browser_toolbox">
+        <a class="fas fa-bars" onclick="$('#browser_menu').toggle()"
+          >メニュー</a
+        >
+        <a class="fas fa-arrow-circle-left" onclick="history.back()">戻る</a>
+        <a class="fas fa-arrow-circle-right" onclick="history.forward()"
+          >進む</a
+        >
+        <a
+          class="far fa-star"
+          onclick="alr('お気に入り','<a><div class=\'button\'>登録する</div></a>')"
+        ></a>
+      </div>
+      <div id="browser_menu">
+        <a class="fas fa-redo-alt">再読込</a>
+        <a class="fas fa-window-restore">タブ管理</a>
+        <a class="far fa-star">Bookmark</a>
+        <a class="fas fa-wrench">開発メニュー</a>
+        <a class="fas fa-question-circle">ヘルプ</a>
+      </div>
+      <i class="fas fa-arrow-right" id="browser_return"></i>
+      <iframe id="browser_frame" src="about:blank"></iframe>
+    </section>
+
+    <section id="settings">
+      <h3 class="fas fa-cog">設定</h3>
+      <br />
+      <input id="settings_search" value="設定項目の検索" />
+      <a class="fas fa-search title_right" style="padding: 10px">検索</a>
+      <br />
+      <h3 class="fas fa-sliders-h">基本設定(UI)</h3>
+      <h5>
+        ユーザーインターフェースの表示上の設定(フォントや壁紙など)を行います
+      </h5>
+      <aside>文字およびフォント</aside>
+      <h5>
+        フォント種類では、使用するフォントを優先度順に,区切りで指定することができます。
+      </h5>
+      <div
+        class="fas fa-caret-right click"
+        onclick="alr('記法の説明','<h5>font-style、 font-variant、 font-weight、 font-size、 line-height、 font-familyの6つのプロパティの値を指定します。font-style、font-variant、font-weight（順不同）font-sizeline-heightfont-familyの順序でプロパティを指定します。line-heightを指定する場合には、値を記述する前に/で区切ります。フォント名にスペースが含まれている場合には、ダブルクォーテーションまたはシングルクォーテーションで囲む必要があります。</h5>')"
+      >
+        フォント指定記法について<br />
+      </div>
+      <div
+        class="fas fa-caret-right click"
+        id="settings_font"
+        onclick="alr('フォントの設定','フォントのプロパティ値の変更を適用しました。<br>Properties : '+$('#settings_fontvalue').val())"
+      >
+        フォントの選択を確定<br />
+      </div>
+      <input id="settings_fontvalue" value="bold oblique x-large/50% serif" />
+      <div
+        class="fas fa-caret-right click"
+        id="settings_fontfamily"
+        onclick="alr('フォント種類の設定','フォント種類を適用しました。<br>Fonts : '+$('#settings_fontfamilyvalue').val())"
+      >
+        フォント種類を設定<br />
+      </div>
+      <input id="settings_fontfamilyvalue" value="sans-serif" />
+      <div class="fas fa-toggle-on toggle" id="settings_ts">
+        テキストシャドー
+      </div>
+      <aside>壁紙の設定</aside>
+      <h5>画像、単色またはライブ壁紙を選択できます。</h5>
+      <div
+        class="fas fa-caret-right click"
+        id="settings_bgs1"
+        onclick="alr('壁紙の設定','壁紙を変更しました。<br>画像:'+$('#settings_bgvalue_1').val())"
+      >
+        任意の画像を設定<br />
+      </div>
+      <input id="settings_bgvalue_1" value="bgp.jpg" />
+      <div
+        class="fas fa-caret-right click"
+        id="settings_bgs2"
+        onclick="alr('壁紙の設定','壁紙を変更しました。<br>単色:'+$('#settings_bgvalue_2').val())"
+      >
+        単色を設定<br />
+      </div>
+      <input id="settings_bgvalue_2" value="#404090" />
+      <div
+        class="fas fa-caret-right click"
+        id="settings_bgs3"
+        onclick="alr('ファイルを選択',$('#file').html())"
+      >
+        ライブ壁紙<br />
+      </div>
+      <input id="settings_bgvalue_3" value="ファイル名を指定" />
+      <aside>OSのUI幅の設定</aside>
+      <div
+        class="fas fa-caret-right click"
+        id="settings_width"
+        onclick="alr('幅(UI)の設定','UI表示範囲の幅を変更しました。autoを設定すると自動的にディスプレイサイズに合致した幅を設定します。<br>WIDTH:'+$('#settings_widthvalue').val())"
+      >
+        指定値を決定<br />
+      </div>
+      <input id="settings_widthvalue" value="auto" />
+      <h3 class="fas fa-sliders-h">OSの設定</h3>
+      <aside>オンラインディストリビューション</aside>
+      <h5>
+        オンライン上に配置されたディストリビューションからmOSを起動することができます。起動先のサービスを選択してください。
+      </h5>
+      <div class="fas fa-caret-right click">
+        <a href="http://sdy.client.jp/mosr.html">sdyクライアント(Japan)</a>
+      </div>
+      <div
+        class="fas fa-caret-right click"
+        onclick="alr('URLを指定','<input class=\'textbox\'><div class=\'button\'>Add</div>')"
+      >
+        追加する
+      </div>
+      <aside>スタートアップの許可</aside>
+      <h5>スタートアップを許可するアプリケーションを選択してください。</h5>
+      <div class="fas fa-check cbox">networkLauncher.sys</div>
+      <div class="fas fa-check cbox">rycloud.app</div>
+      <div class="fas fa-check cbox">module.c</div>
+      <div
+        class="fas fa-caret-right click"
+        onclick="alr('スタートアップの追加','スタートアップに追加するアプリケーションの識別子またはパスを入力してください。<br><input class=\'textbox\'><div class=\'button\'>Add</div>')"
+      >
+        追加する
+      </div>
+      <h3 class="fas fa-sliders-h">ソフトウェアの更新</h3>
+      <aside>
+        現在のOS：
+        <script type="text/javascript">
+          document.write(SystemName);
+        </script>
+      </aside>
+      <div
+        class="fas fa-caret-right click"
+        onclick="alr(SystemName,'mOS R7 ver 7.00.1290(beta)<br>最新です。')"
+      >
+        アップデートを確認
+      </div>
+    </section>
+
+    <section id="file">
+      <input value="/" class="textbox" />
+      <div class="fas fa-folder click">app</div>
+      <div class="fas fa-folder click">data</div>
+      <div class="fas fa-folder click">music</div>
+      <div class="fas fa-folder click">document</div>
+      <div class="fas fa-folder click">photos</div>
+      <div class="fas fa-folder click">system</div>
+      <div class="fas fa-folder click">user</div>
+      <a class="fas fa-arrow-circle-up title_right">上へ</a>
+    </section>
+
+    <section id="mos">
+      <h3 class="fas fa-terminal">mOSターミナル</h3>
+      <div id="mos_term" contenteditable>
+        mOS R7 ver 7.00.1290(beta)<br /><br />$
+      </div>
+      <a class="fas fa-arrow-circle-right title_right" id="mos_exec">実行</a>
+    </section>
+
+    <section id="viwmxa">
+      <h3 class="fas fa-boxes">VIWMxa</h3>
+      <aside>[rv0012.0105(m4)]</aside>
+      <form name="myform">
+        <label for="file_upload">
+          <div class="textbox" id="viw_filename">ファイルを入力…</div>
+          <input
+            type="file"
+            id="file_upload"
+            style="display: none"
+            name="myfile"
+          />
+        </label>
+      </form>
+      <h3 class="fas fa-file-export">どのように実行？</h3>
+      <select class="textbox">
+        <option selected disabled>形式</option>
+        <option>WinNT</option>
+        <option>macOS</option>
+        <option>Wine(macOS)</option>
+        <option>Android2.3</option>
+        <option>Android4.x</option>
+        <option>Android 7.x</option>
+        <option>mOS</option>
+        <option>Allry 5.x</option>
+      </select>
+      <div class="fas fa-toggle-off toggle">VMX(xX)互換</div>
+      <div class="button">実行</div>
+      <hr />
+      <h3 class="fas fa-eye">プレビュー</h3>
+      <div id="viw_preview">ファイルが選択されていません。</div>
+    </section>
+
+    <section id="phone">
+      <h3 class="fas fa-phone-square">電話</h3>
+      <br />
+      <aside>コール</aside>
+      <a class="fas fa-address-book button">電話帳</a>
+      <a class="fas fa-phone button">発信</a>
+      <input class="textbox" value="" />
+      <aside>発着信履歴</aside>
+      <h5>履歴はありません</h5>
+    </section>
+
+    <section id="twitter">
+      <h3 class="fab fa-twitter">Twitter for mOS</h3>
+      <br />
+      <aside class="far fa-clock" id="twitter_time">00:00:00</aside>
+      <input id="twitter_text" class="textbox" value="いまどうしてる？" />
+      <a class="fas fa-arrow-circle-right click" id="tweet">ツイート</a>
+    </section>
+
+    <div id="alert">
+      <div id="alert_black"></div>
+      <div id="alert_box">
+        <div id="alert_title">title</div>
+        <div id="alert_content">content</div>
+        <div id="alert_close" class="button">OK</div>
+      </div>
+    </div>
+
+    <footer>
+      <div style="padding: 25px 10px">
+        <ul class="approw">
+          <div class="app wifi"><i class="fas fa-wifi"></i><br />WiFi</div>
+          <div class="app bluetooth">
+            <i class="fab fa-bluetooth-b"></i><br />Bluetooth
+          </div>
+          <div class="app sound">
+            <i class="fas fa-volume-off"></i><br />ミュート
+          </div>
+          <div class="app home">
+            <i class="fas fa-plane"></i><br />機内モード
+          </div>
+        </ul>
+        <hr />
+        <a class="fas fa-eraser title_right" id="ntf_del">すべて消去</a>
+        <div id="numofntf"></div>
+        <div id="ntf_area"></div>
+      </div>
+    </footer>
+
+    <header>
+      <div style="padding: 4px">
+        <i class="far fa-comment-alt"></i>
+        <span id="head_device">_device</span>
+        <div id="head_right">
+          <i class="fas fa-battery-full">100%</i>
+          <i class="fas fa-wifi"></i>
+          <span id="head_time"></span>
+        </div>
+      </div>
+    </header>
+
+    <div id="footicon">
+      <div class="fas fa-arrow-left back" id="footback"></div>
+      <div class="fas fa-home home" id="foothome"></div>
+    </div>
+  </body>
+</html>
